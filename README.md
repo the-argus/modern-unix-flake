@@ -8,7 +8,7 @@ Zsh shell. Could add partial bash support if anyone wants it.
 After importing the flake into HM, add the following into your HM config:
 ```nix
 {
-  modernUnix.enable = true;
+  programs.modernUnix.enable = true;
   programs.zsh.initExtra = ''
       # hook aliases into your shell. Technically optional,
       # but it's the best part.
