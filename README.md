@@ -7,12 +7,15 @@ Zsh shell. Could add partial bash support if anyone wants it.
 # usage
 After importing the flake into HM, add the following into your HM config:
 ```nix
-modernUnix.enable = true;
-programs.zsh.initExtra = ''
-    # hook aliases into your shell. Technically optional,
-    # but it's the best part.
-    eval "$(modernunix)"
-'';
+{
+  modernUnix.enable = true;
+  programs.zsh.initExtra = ''
+      # hook aliases into your shell. Technically optional,
+      # but it's the best part.
+      eval "$(modernunix)"
+  '';
+}
+```
 
 # to-do
 - Add [bottom](https://github.com/ClementTsang/bottom) (requires packaging, maybe
