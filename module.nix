@@ -13,7 +13,7 @@ in {
     '';
 
     excludePackages = mkOption {
-      type = types.list;
+      type = types.listOf types.package;
       default = with pkgs; [
         ranger
         broot
@@ -48,6 +48,14 @@ in {
     aggressiveAliasing = mkEnableOption ''
       Whether or not to alias similar but incompatible commands.
     '';
+
+    initExtra = mkOption {
+      type = types.lines;
+      default = '''';
+      description = ''
+        Additional zsh script to by imported when evaluating the 
+        init command.'';
+    };
   };
   config = let
     using = pkg: !(lib.lists.any (value: value == pkg) cfg.excludePackages);
@@ -86,6 +94,8 @@ in {
         then "eval \"$(zoxide init zsh)\""
         else ""
       }
+
+      ${cfg.initExtra}
     '';
     modernUnix =
       pkgs.writeShellScriptBin
