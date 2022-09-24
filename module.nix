@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption types;
+  inherit (lib) mkOption mkEnableOption types mkIf;
   cfg = config.programs.modernUnix;
 in {
   options.programs.modernUnix = {
