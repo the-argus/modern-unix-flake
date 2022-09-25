@@ -108,6 +108,27 @@ in {
       pkgs.writeShellScriptBin
       "modern-unix"
       "${pkgs.coreutils-full}/bin/cat ${shellInit}";
+
+    # putting it in this file should allow the user to override
+    # this desktop association by creating their own markdown.desktop
+    mdrWithDesktop = pkgs.mdr.overrideAttrs (oa: {
+      postInstall = let
+        desktopEntry = builtins.toFile "markdown.desktop" ''
+          [Desktop Entry]
+          Name=mdr
+          GenericName=Markdown Viewer
+          Comment=CLI Markdown Renderer
+          Exec=mdr %f
+          Terminal=true
+          Type=Application
+          NoDisplay=true
+          MimeType=text/markdown
+        '';
+      in ''
+        mkdir -p $out/share/applications
+        cp ${desktopEntry} $out/share/applications/markdown.desktop
+      '';
+    });
   in
     mkIf cfg.enable {
       home.packages = with pkgs;
@@ -148,7 +169,7 @@ in {
 
           # fancy...
           gping
-          mdr # excellent markdown renderer
+          mdrWithDesktop # excellent markdown renderer
 
           # util
           choose # cut/awk alternative
@@ -165,6 +186,10 @@ in {
           # package for this module
           modernUnix
         ];
+
+      xdg.mimeApps = {
+        defaultApplications."text/markdown" = ["markdown.desktop"];
+      };
 
       home.file = {
         ".config/ranger/plugins/zoxide" = {
