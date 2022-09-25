@@ -19,7 +19,7 @@ After importing the flake into HM, add the following into your HM config:
 
 # to-do
 - Add [bottom](https://github.com/ClementTsang/bottom) (requires packaging, maybe
-PR to nixpkgs.
+PR to nixpkgs).
 
 # goals
 This is meant to provide a bunch of good defaults. It does not allow for much
