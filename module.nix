@@ -91,14 +91,10 @@ in {
       }
 
       ${
-        if using pkgs.mcfly
-        then "eval \"$(mcfly init zsh)\""
-        else ""
+        optional (using pkgs.mcfly) "eval \"$(mcfly init zsh)\""
       }
       ${
-        if using pkgs.zoxide
-        then "eval \"$(zoxide init zsh)\""
-        else ""
+        optional (using pkgs.zoxide) "eval \"$(zoxide init zsh)\""
       }
 
       ${cfg.initExtra}
