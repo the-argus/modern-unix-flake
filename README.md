@@ -1,5 +1,5 @@
 # modern-unix-flake
-A home manager module that provides commands from [ibraheemdev/modern-unix.](github.com/ibraheemdev/modern-unix)
+A home manager module that provides commands from [ibraheemdev/modern-unix.](https://www.github.com/ibraheemdev/modern-unix)
 
 # requirements
 Zsh shell. Could add partial bash support if anyone wants it.
