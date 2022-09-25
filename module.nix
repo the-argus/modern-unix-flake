@@ -10,6 +10,12 @@
     then str
     else "";
   cfg = config.programs.modernUnix;
+  defaultTrueBool = description:
+    mkOption {
+      type = types.bool;
+      default = true;
+      inherit description;
+    };
 in {
   options.programs.modernUnix = {
     enable = mkEnableOption ''
@@ -38,20 +44,19 @@ in {
 
     rangerZoxideIntegration = mkEnableOption "Install ranger-zoxide.";
 
-    createAliases = mkOption {
-      type = types.bool;
-      default = true;
-      description = ''
-        Whether or not to alias the old equivalents of these modern commands
-        to the the new commands. Basically means "default to modern unix."
-        Will only alias backwards-compatible (or mostly backwards-compatible)
-        commands, unless aggressiveAliasing is true.
-      '';
-    };
+    createAliases = defaultTrueBool ''
+      Whether or not to alias the old equivalents of these modern commands
+      to the the new commands. Basically means "default to modern unix."
+      Will only alias backwards-compatible (or mostly backwards-compatible)
+      commands, unless aggressiveAliasing is true.
+    '';
 
     aggressiveAliasing = mkEnableOption ''
       Whether or not to alias similar but incompatible commands.
     '';
+
+    initZoxide = defaultTrueBool "Add init command for zoxide in modernunixrc.";
+    initMcfly = defaultTrueBool "Add init command for mcfly in modernunixrc.";
 
     initExtra = mkOption {
       type = types.lines;
@@ -91,10 +96,10 @@ in {
       }
 
       ${
-        optional (using pkgs.mcfly) "eval \"$(mcfly init zsh)\""
+        optional ((using pkgs.mcfly) && cfg.initMcfly) "eval \"$(mcfly init zsh)\""
       }
       ${
-        optional (using pkgs.zoxide) "eval \"$(zoxide init zsh)\""
+        optional ((using pkgs.zoxide) && cfg.initZoxide) "eval \"$(zoxide init zsh)\""
       }
 
       ${cfg.initExtra}
