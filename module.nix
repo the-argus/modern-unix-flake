@@ -5,6 +5,10 @@
   ...
 }: let
   inherit (lib) mkOption mkEnableOption types mkIf;
+  optional = bool: str:
+    if bool
+    then str
+    else "";
   cfg = config.programs.modernUnix;
 in {
   options.programs.modernUnix = {
@@ -60,28 +64,30 @@ in {
   config = let
     using = pkg: !(lib.lists.any (value: value == pkg) cfg.excludePackages);
     shellInit = builtins.toFile "modernunixrc" ''
-      alias htop="gtop"
-      alias ping="gping"
-      alias man="tldr"
-      alias back="z -"
-      alias cd="z"
-      alias df="duf"
-      alias top="procs"
-      alias diff="delta"
-      function ls () {
-        lsd --group-dirs=first $@
-      }
-      alias cat="bat"
       ${
-        if cfg.aggressiveAliasing
-        then ''
-          alias find="fd"
-          alias grep="rg"
-          alias cut="choose"
-          alias sed="sd"
+        optional cfg.createAliases ''
+          alias htop="gtop"
+          alias ping="gping"
+          alias man="tldr"
+          alias back="z -"
+          alias cd="z"
           alias df="duf"
+          alias top="procs"
+          alias diff="delta"
+          function ls () {
+            lsd --group-dirs=first $@
+          }
+          alias cat="bat"
+          ${
+            (optional cfg.aggressiveAliasing ''
+              alias find="fd"
+              alias grep="rg"
+              alias cut="choose"
+              alias sed="sd"
+              alias df="duf"
+            '')
+          }
         ''
-        else ""
       }
 
       ${
