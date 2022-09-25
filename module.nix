@@ -148,6 +148,7 @@ in {
 
           # fancy...
           gping
+          mdr # excellent markdown renderer
 
           # util
           choose # cut/awk alternative
