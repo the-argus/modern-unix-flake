@@ -80,7 +80,7 @@ in {
           alias top="procs"
           alias diff="delta"
           function ls () {
-            lsd --group-dirs=first $@
+            lsd $@ --group-dirs=first
           }
           alias cat="bat"
           ${
