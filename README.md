@@ -10,9 +10,9 @@ After importing the flake into HM, add the following into your HM config:
 {
   programs.modernUnix.enable = true;
   programs.zsh.initExtra = ''
-      # hook aliases into your shell. Technically optional,
-      # but it's the best part.
-      eval "$(modernunix)"
+    # you need to initialize some commands
+    # as well as aliases
+    eval "$(modern-unix)"
   '';
 }
 ```
