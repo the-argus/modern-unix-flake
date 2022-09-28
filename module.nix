@@ -51,6 +51,10 @@ in {
       commands, unless aggressiveAliasing is true.
     '';
 
+    replaceLsWithLsd = defaultTrueBool ''
+      Whether or not to alias lsd in place of ls, with directories grouped first.
+    '';
+
     aggressiveAliasing = mkEnableOption ''
       Whether or not to alias similar but incompatible commands.
     '';
@@ -71,20 +75,25 @@ in {
     shellInit = builtins.toFile "modernunixrc" ''
       ${
         optional cfg.createAliases ''
-          alias htop="gtop"
-          alias ping="gping"
-          alias man="tldr"
+          # alias htop="gtop" # gtop is cool but only for viewing not managing
+          # processes
           alias back="z -"
           alias cd="z"
           alias df="duf"
           alias top="procs"
           alias diff="delta"
-          function ls () {
-            lsd $@ --group-dirs=first
-          }
           alias cat="bat"
+
+          ${
+            optional cfg.replaceLsWithLsd ''
+              function ls () {
+                lsd $@ --group-dirs=first --color=auto
+              } ''
+          }
           ${
             (optional cfg.aggressiveAliasing ''
+              alias ping="gping"
+              alias man="tldr"
               alias find="fd"
               alias grep="rg"
               alias cut="choose"
