@@ -51,7 +51,7 @@ in {
       commands, unless aggressiveAliasing is true.
     '';
 
-    replaceLsWithLsd = defaultTrueBool ''
+    replaceLsWithLsd = mkEnableOption ''
       Whether or not to alias lsd in place of ls, with directories grouped first.
     '';
 
@@ -84,11 +84,14 @@ in {
           alias diff="delta"
           alias cat="bat"
 
+          # lsd should always group directories first :(
+          function lsd () {
+            lsd $@ --group-dirs=first --color=auto
+          }
           ${
             optional cfg.replaceLsWithLsd ''
-              function ls () {
-                lsd $@ --group-dirs=first --color=auto
-              } ''
+              alias ls="lsd"
+            ''
           }
           ${
             (optional cfg.aggressiveAliasing ''
