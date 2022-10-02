@@ -86,7 +86,7 @@ in {
 
           # lsd should always group directories first :(
           function lsd () {
-            lsd $@ --group-dirs=first --color=auto
+            command lsd $@ --group-dirs=first --color=auto
           }
           ${
             optional cfg.replaceLsWithLsd ''
