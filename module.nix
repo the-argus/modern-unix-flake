@@ -27,7 +27,7 @@ in {
       default = with pkgs; [
         ranger
         broot
-        exa # lsd is better
+        eza # lsd is better
         glances # gtop is better
         choose # i will forget to use this one
         cheat # i dont use these
